@@ -52,10 +52,10 @@ function App() {
       let result = await fetchData(
         `https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/${element}/modelyear/${modelYear}/vehicleType/${selectedVehicleType}?format=json`
       );
-      arr.push(result.Results);
+      arr.push(...result.Results);
       console.log(result.Results);
+      console.log(arr);
     });
-    console.log(arr);
   };
 
   //vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/474/modelyear/2015/vehicleType/truck?format=json

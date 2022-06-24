@@ -30,7 +30,6 @@ function FormComponent({
   };
 
   const handleYearChange = (e) => {
-    console.log(e.target.value);
     setModelYear(e.target.value);
   };
   const handleSubmit = (e) => {
