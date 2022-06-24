@@ -11,12 +11,16 @@ function FormComponent({
   useYear,
   setModelYear,
   submitButtonDisabled,
+  handleSearch,
 }) {
+  const [form] = Form.useForm();
+
   const handleVechicleTypeChange = (value) => {
     //console.log(value);
     setSelectedVehicleType(value);
   };
   const hadleVehicleMakeChange = (value) => {
+    console.log(value);
     setSelectedVehicleMake(value);
   };
 
@@ -28,6 +32,10 @@ function FormComponent({
   const handleYearChange = (e) => {
     console.log(e.target.value);
     setModelYear(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    //validation
+    handleSearch();
   };
   return (
     <div>
@@ -82,7 +90,7 @@ function FormComponent({
           >
             {vehicleMakes.map((elem, index) => {
               return (
-                <Option key={index} value={elem.MakeName}>
+                <Option key={index} value={elem.MakeId}>
                   {elem.MakeName}
                 </Option>
               );
@@ -116,6 +124,7 @@ function FormComponent({
           disabled={submitButtonDisabled}
           type="primary"
           htmlType="submit"
+          onClick={handleSubmit}
         >
           Submit
         </Button>

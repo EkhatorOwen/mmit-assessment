@@ -1,5 +1,5 @@
 import FormComponent from "./Components/Form";
-import Table from "./Components/Table";
+import FormTable from "./Components/Table";
 import { fetchData } from "./utils";
 
 import { useState, useEffect } from "react";
@@ -13,8 +13,9 @@ function App() {
   const [selectedVehicleMake, setSelectedVehicleMake] = useState("");
   const [useYear, setUseYear] = useState(false);
   const [modelYear, setModelYear] = useState("");
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [filterdResults, setFilteredResults] = useState([]);
 
   useEffect(() => {
     const fetchVehicle = async () => {
@@ -45,6 +46,16 @@ function App() {
 
   useEffect(() => {}, []);
 
+  const handleSearch = async () => {
+    selectedVehicleMake.forEach(async (element) => {
+      let result = await fetchData(
+        `https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/${element}/modelyear/${modelYear}/vehicleType/${selectedVehicleType}?format=json`
+      );
+      console.log(result);
+    });
+  };
+
+  //vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/474/modelyear/2015/vehicleType/truck?format=json
   return (
     <div className="App">
       <header className="App-header">
@@ -58,8 +69,10 @@ function App() {
           useYear={useYear}
           setModelYear={setModelYear}
           submitButtonDisabled={submitButtonDisabled}
+          setFilteredResults={setFilteredResults}
+          handleSearch={handleSearch}
         />
-        <Table />
+        <FormTable />
       </header>
     </div>
   );
