@@ -12,6 +12,7 @@ function FormComponent({
   setModelYear,
   submitButtonDisabled,
   handleSearch,
+  loading,
 }) {
   const [form] = Form.useForm();
 
@@ -20,12 +21,10 @@ function FormComponent({
     setSelectedVehicleType(value);
   };
   const hadleVehicleMakeChange = (value) => {
-    console.log(value);
     setSelectedVehicleMake(value);
   };
 
   const handleCheckBoxChange = (e) => {
-    console.log(e.target.checked);
     setUseYear(e.target.checked);
   };
 
@@ -119,14 +118,17 @@ function FormComponent({
             />
           </Form.Item>
         )}
-        <Button
-          disabled={submitButtonDisabled}
-          type="primary"
-          htmlType="submit"
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
+        <div style={{ display: "flex" }}>
+          <Button
+            disabled={submitButtonDisabled}
+            type="primary"
+            htmlType="submit"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>{" "}
+          {loading && <p>searching...</p>}
+        </div>
       </Form>
     </div>
   );

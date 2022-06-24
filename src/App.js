@@ -16,6 +16,7 @@ function App() {
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filterdResults, setFilteredResults] = useState([]);
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     const fetchVehicle = async () => {
@@ -47,18 +48,31 @@ function App() {
   useEffect(() => {}, []);
 
   const handleSearch = async () => {
+    let url;
     let arr = [];
-    selectedVehicleMake.forEach(async (element) => {
-      let result = await fetchData(
-        `https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/${element}/modelyear/${modelYear}/vehicleType/${selectedVehicleType}?format=json`
-      );
-      arr.push(...result.Results);
-      console.log(result.Results);
-      console.log(arr);
+    setLoading(true);
+    let response = await selectedVehicleMake.map(async (element) => {
+      if (useYear) {
+        url = `https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/${element}/modelyear/${modelYear}/vehicleType/${selectedVehicleType}?format=json`;
+      } else {
+        url = `https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/${element}/vehicleType/${selectedVehicleType}?format=json`;
+      }
+      let response = await fetchData(url);
+      return response;
+    });
+    Promise.all(response).then((values) => {
+      console.log(values);
+      setLoading(false);
+      let result = values.map((elem) => {
+        return elem.Results.map((elem) => {
+          console.log(elem);
+          return arr.push(elem);
+        });
+      });
+      setTableData(arr);
     });
   };
 
-  //vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/474/modelyear/2015/vehicleType/truck?format=json
   return (
     <div className="App">
       <header className="App-header">
@@ -74,8 +88,9 @@ function App() {
           submitButtonDisabled={submitButtonDisabled}
           setFilteredResults={setFilteredResults}
           handleSearch={handleSearch}
+          loading={loading}
         />
-        <FormTable />
+        <FormTable tableData={tableData} />
       </header>
     </div>
   );

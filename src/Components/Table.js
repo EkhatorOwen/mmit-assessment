@@ -4,29 +4,29 @@ import { Table } from "antd";
 const columns = [
   {
     title: "Make ID",
-    dataIndex: "makeid",
-    key: "makeid",
+    dataIndex: "Make_ID",
+    key: "Make_ID",
   },
   {
     title: "Make Name",
-    dataIndex: "makeName",
-    key: "makeName",
+    dataIndex: "Make_Name",
+    key: "Make_Name",
   },
   {
     title: "Model ID",
-    dataIndex: "modelid",
-    key: "modelid",
+    dataIndex: "Model_ID",
+    key: "Model_ID",
   },
   {
     title: "Model Name",
-    dataIndex: "modelName",
-    key: "modelName",
+    dataIndex: "Model_Name",
+    key: "Model_Name",
   },
 ];
-function FormTable() {
+function FormTable({ tableData }) {
   return (
     <div>
-      <Table columns={columns} />
+      <Table dataSource={tableData} columns={columns} />
     </div>
   );
 }
