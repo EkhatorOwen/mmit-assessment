@@ -47,11 +47,12 @@ function App() {
   useEffect(() => {}, []);
 
   const handleSearch = async () => {
+    let arr = [];
     selectedVehicleMake.forEach(async (element) => {
       let result = await fetchData(
         `https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeIdYear/makeId/${element}/modelyear/${modelYear}/vehicleType/${selectedVehicleType}?format=json`
       );
-      console.log(result);
+      arr.push(result.Results);
     });
   };
 
